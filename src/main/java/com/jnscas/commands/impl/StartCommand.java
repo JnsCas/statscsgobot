@@ -1,8 +1,8 @@
 package com.jnscas.commands.impl;
 
 import com.jnscas.commands.Command;
-import com.jnscas.entities.UserTelegram;
 import com.jnscas.model.ContextBot;
+import com.jnscas.pendinginputs.impl.StartPendingInput;
 import com.jnscas.statscsgo.model.User;
 import com.jnscas.statscsgo.persistence.UserDAO;
 import com.jnscas.utils.SendMessageBuilder;
@@ -28,17 +28,20 @@ public class StartCommand implements Command {
 
     @Override
     public SendMessage executeCommand(ContextBot context) {
-        String userName = context.userTelegram().getUserName();
-        Optional<User> user = userDAO.findUserByUserName(userName);
-        if (!user.isPresent()) {
+        String userName = context.user().getUserName();
+        Optional<User> mayBeUser = userDAO.findByUserName(userName);
+        if (!mayBeUser.isPresent()) {
             logger.info(String.format("User %s not exists", userName));
-            User userNew = new User(userName, Optional.empty());
+            User userNew = context.user();
+            userNew.setPendingInput(new StartPendingInput());
             userDAO.store(userNew);
             return SendMessageBuilder.newBuilder()
                     .chatId(context.chatId())
                     .userName(userName)
                     .messageText("Insert your steamID64, please")
                     .build();
+        } else if (mayBeUser.get().pendingInputExists()) { //si llama /start 2 veces seguidas
+            return mayBeUser.get().getPendingInput().resolve(context.update()); //FIXME testear!!!!
         } else {
             return SendMessageBuilder.newBuilder()
                     .chatId(context.chatId())

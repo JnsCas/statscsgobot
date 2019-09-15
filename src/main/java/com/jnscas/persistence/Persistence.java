@@ -1,6 +1,5 @@
 package com.jnscas.persistence;
 
-import com.jnscas.entities.UserTelegram;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 

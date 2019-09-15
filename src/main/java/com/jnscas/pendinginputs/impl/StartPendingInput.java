@@ -26,8 +26,6 @@ public class StartPendingInput implements PendingInput {
         Long chatId = update.getMessage().getChatId();
         String steamId = update.getMessage().getText();
         if (isValidSteamId(steamId)) {
-            //steamIdByUser.put(userName, steamId); FIXME actualizar mongo
-            //pendingSignUpByUser.put(userName, false); FIXME actualizar mongo
             logger.info(String.format("Sign up ok for username: %s", userName));
             return SendMessageBuilder.newBuilder()
                     .chatId(chatId)
@@ -45,5 +43,10 @@ public class StartPendingInput implements PendingInput {
 
     private boolean isValidSteamId(String messageText) { //TODO create unit test
         return messageText.length() == 17 && messageText.matches("\"-?(0|[1-9]\\\\d*)\"");
+    }
+
+    @Override
+    public String getPendingInputName() {
+        return StartPendingInput.class.getName();
     }
 }

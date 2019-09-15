@@ -13,6 +13,6 @@ public class UserTelegramDAO extends Persistence<UserTelegram> {
     }
 
     public Optional<UserTelegram> findByUserName(String userName) {
-        return findByColumn("user_name", userName);
+        return findByColumn("userName", userName);
     }
 }

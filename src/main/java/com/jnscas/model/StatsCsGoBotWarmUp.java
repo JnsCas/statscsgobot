@@ -28,10 +28,9 @@ public class StatsCsGoBotWarmUp {
         CodecRegistry pojoCodecRegistry = fromRegistries(MongoClientSettings.getDefaultCodecRegistry(),
                 fromProviders(PojoCodecProvider.builder().automatic(true).build()));
         MongoDatabase database = mongoClient.getDatabase(config.getString("db.mongo.name")).withCodecRegistry(pojoCodecRegistry);
-        UserTelegramDAO userTelegramDAO = new UserTelegramDAO(database, "users_telegram");
         UserDAO userDAO = new UserDAO(database, "users");
         return new StatsCsGoBot(
-                userTelegramDAO,
+                userDAO,
                 Lists.newArrayList(new StartCommand(userDAO))
         );
     }

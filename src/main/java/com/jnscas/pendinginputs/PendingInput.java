@@ -9,4 +9,6 @@ public interface PendingInput {
     boolean hasUserActivePending(String userName);
 
     SendMessage resolve(Update update);
+
+    String getPendingInputName();
 }

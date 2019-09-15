@@ -1,26 +1,26 @@
 package com.jnscas.model;
 
-import com.jnscas.entities.UserTelegram;
+import com.jnscas.statscsgo.model.User;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
 public class ContextBot {
 
-    private UserTelegram userTelegram;
+    private User user;
     private Update update;
     private Message message;
     private Long chatId;
 
-    public ContextBot(UserTelegram userTelegram,
+    public ContextBot(User user,
                       Update update) {
-        this.userTelegram = userTelegram;
+        this.user = user;
         this.update = update;
         this.message = update.getMessage();
         this.chatId = update.getMessage().getChatId();
     }
 
-    public UserTelegram userTelegram() {
-        return userTelegram;
+    public User user() {
+        return user;
     }
 
     public Update update() {
@@ -38,7 +38,7 @@ public class ContextBot {
     @Override
     public String toString() {
         return "ContextBot{" +
-                "userTelegram=" + userTelegram +
+                "user=" + user +
                 ", update=" + update +
                 ", message=" + message +
                 ", chatId=" + chatId +

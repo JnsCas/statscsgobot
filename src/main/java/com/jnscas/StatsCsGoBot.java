@@ -1,9 +1,9 @@
 package com.jnscas;
 
 import com.jnscas.commands.Command;
-import com.jnscas.entities.UserTelegram;
 import com.jnscas.model.ContextBot;
-import com.jnscas.persistence.UserTelegramDAO;
+import com.jnscas.statscsgo.model.User;
+import com.jnscas.statscsgo.persistence.UserDAO;
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
 import org.apache.logging.log4j.Logger;
@@ -23,11 +23,11 @@ public class StatsCsGoBot extends TelegramLongPollingBot { //FIXME esto deberia 
 
     private List<Command> commands;
 
-    private UserTelegramDAO userTelegramDAO;
+    private UserDAO userDAO;
 
-    public StatsCsGoBot(UserTelegramDAO userTelegramDAO,
+    public StatsCsGoBot(UserDAO userDAO,
                         List<Command> commands) {
-        this.userTelegramDAO = userTelegramDAO;
+        this.userDAO = userDAO;
         this.commands = commands;
     }
 
@@ -37,7 +37,6 @@ public class StatsCsGoBot extends TelegramLongPollingBot { //FIXME esto deberia 
         logger.info(String.format("message received: %s", context));
 
         //userTelegram.pendingInput().ifPresent(pendingInput -> pendingInput.resolve(update));
-
         if (context.message().isCommand()) {
             commands.stream().filter(command ->
                     command.name().equalsIgnoreCase(context.message().getText())
@@ -54,30 +53,28 @@ public class StatsCsGoBot extends TelegramLongPollingBot { //FIXME esto deberia 
                     e.printStackTrace();
                 }
             });
-        }/* else {
-            pendingInputs.stream().filter(pendingInput ->
-               pendingInput.hasUserActivePending(update.getMessage().getFrom().getUserName())
-            ).findFirst().ifPresent(pendingInput -> {
+        } else {
+            if (context.user().pendingInputExists()) {
                 try {
-                    SendMessage sendMessage = pendingInput.resolve(update);
+                    SendMessage sendMessage = context.user().getPendingInput().resolve(update);
                     sendMessage.validate();
                     execute(sendMessage);
                 } catch (TelegramApiException e) {
                     e.printStackTrace();
                 }
-            });
-        }*/
+            }
+        }
 
     }
 
     private ContextBot createContextBot(Update update) {
         String userName = update.getMessage().getFrom().getUserName();
-        Optional<UserTelegram> mayBeUserTelegram = userTelegramDAO.findByUserName(userName);
-        if (!mayBeUserTelegram.isPresent()) {
-            UserTelegram userTelegram = new UserTelegram(userName);
-            return new ContextBot(userTelegram, update);
+        Optional<User> mayBeUser = userDAO.findByUserName(userName);
+        if (!mayBeUser.isPresent()) {
+            User user = new User(userName); //FIXME empty por default?
+            return new ContextBot(user, update);
         } else {
-            return new ContextBot(mayBeUserTelegram.get(), update);
+            return new ContextBot(mayBeUser.get(), update);
         }
     }
 
