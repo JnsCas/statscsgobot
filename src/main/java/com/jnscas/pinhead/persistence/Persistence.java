@@ -1,4 +1,4 @@
-package com.jnscas.persistence;
+package com.jnscas.pinhead.persistence;
 
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
@@ -6,6 +6,7 @@ import com.mongodb.client.MongoDatabase;
 import java.util.Optional;
 
 import static com.mongodb.client.model.Filters.eq;
+import static com.mongodb.client.model.Updates.set;
 
 public abstract class Persistence<T> {
     private final Class<T> typeClass;
@@ -39,5 +40,9 @@ public abstract class Persistence<T> {
         } else {
             return Optional.empty();
         }
+    }
+
+    protected void updateColumn(String userName, String nameColumn, String value) {
+        retrieveCollection().updateOne(eq("userName", userName), set(nameColumn, value));
     }
 }

@@ -1,6 +1,6 @@
-package com.jnscas.entities;
+package com.jnscas.pinhead.entities;
 
-import com.jnscas.pendinginputs.PendingInput;
+import com.jnscas.pinhead.pendinginputs.PendingInput;
 import org.bson.codecs.pojo.annotations.BsonIgnore;
 import org.bson.types.ObjectId;
 
@@ -23,6 +23,18 @@ public class UserTelegram {
                         Optional<PendingInput> pendingInput) {
         this.userName = userName;
         this.pendingInputName = pendingInput.map(PendingInput::getPendingInputName).orElse(null);
+    }
+
+    public void setId(ObjectId id) {
+        this.id = id;
+    }
+
+    public ObjectId getId() {
+        return id;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
     public String getUserName() {

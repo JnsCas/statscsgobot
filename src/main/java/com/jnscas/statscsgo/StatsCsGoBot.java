@@ -1,7 +1,9 @@
-package com.jnscas;
+package com.jnscas.statscsgo;
 
-import com.jnscas.commands.Command;
-import com.jnscas.model.ContextBot;
+
+import com.jnscas.pinhead.commands.Command;
+import com.jnscas.statscsgo.factories.FactoryUserDAO;
+import com.jnscas.pinhead.model.ContextBot;
 import com.jnscas.statscsgo.model.User;
 import com.jnscas.statscsgo.persistence.UserDAO;
 import com.typesafe.config.Config;
@@ -25,9 +27,8 @@ public class StatsCsGoBot extends TelegramLongPollingBot { //FIXME esto deberia 
 
     private UserDAO userDAO;
 
-    public StatsCsGoBot(UserDAO userDAO,
-                        List<Command> commands) {
-        this.userDAO = userDAO;
+    public StatsCsGoBot(List<Command> commands) {
+        this.userDAO = FactoryUserDAO.create();
         this.commands = commands;
     }
 
@@ -36,7 +37,6 @@ public class StatsCsGoBot extends TelegramLongPollingBot { //FIXME esto deberia 
         ContextBot context = createContextBot(update);
         logger.info(String.format("message received: %s", context));
 
-        //userTelegram.pendingInput().ifPresent(pendingInput -> pendingInput.resolve(update));
         if (context.message().isCommand()) {
             commands.stream().filter(command ->
                     command.name().equalsIgnoreCase(context.message().getText())
@@ -56,9 +56,11 @@ public class StatsCsGoBot extends TelegramLongPollingBot { //FIXME esto deberia 
         } else {
             if (context.user().pendingInputExists()) {
                 try {
-                    SendMessage sendMessage = context.user().getPendingInput().resolve(update);
+                    logger.info(String.format("PendingInput found: %s", context.user().getPendingInputName()));
+                    SendMessage sendMessage = context.user().getPendingInput().resolve(context);
                     sendMessage.validate();
                     execute(sendMessage);
+                    logger.info(String.format("PendingInput %s executed", context.user().getPendingInputName()));
                 } catch (TelegramApiException e) {
                     e.printStackTrace();
                 }
@@ -71,7 +73,7 @@ public class StatsCsGoBot extends TelegramLongPollingBot { //FIXME esto deberia 
         String userName = update.getMessage().getFrom().getUserName();
         Optional<User> mayBeUser = userDAO.findByUserName(userName);
         if (!mayBeUser.isPresent()) {
-            User user = new User(userName); //FIXME empty por default?
+            User user = new User(userName);
             return new ContextBot(user, update);
         } else {
             return new ContextBot(mayBeUser.get(), update);

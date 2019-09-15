@@ -1,11 +1,12 @@
-package com.jnscas.commands.impl;
+package com.jnscas.statscsgo.commands;
 
-import com.jnscas.commands.Command;
-import com.jnscas.model.ContextBot;
-import com.jnscas.pendinginputs.impl.StartPendingInput;
+import com.jnscas.pinhead.commands.Command;
+import com.jnscas.statscsgo.factories.FactoryUserDAO;
+import com.jnscas.pinhead.model.ContextBot;
+import com.jnscas.statscsgo.pendinginputs.StartPendingInput;
 import com.jnscas.statscsgo.model.User;
 import com.jnscas.statscsgo.persistence.UserDAO;
-import com.jnscas.utils.SendMessageBuilder;
+import com.jnscas.pinhead.utils.SendMessageBuilder;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 
 import java.util.Optional;
@@ -17,8 +18,8 @@ public class StartCommand implements Command {
 
     private UserDAO userDAO;
 
-    public StartCommand(UserDAO userDAO) {
-        this.userDAO = userDAO;
+    public StartCommand() {
+        this.userDAO = FactoryUserDAO.create();
     }
 
     @Override
@@ -40,13 +41,12 @@ public class StartCommand implements Command {
                     .userName(userName)
                     .messageText("Insert your steamID64, please")
                     .build();
-        } else if (mayBeUser.get().pendingInputExists()) { //si llama /start 2 veces seguidas
-            return mayBeUser.get().getPendingInput().resolve(context.update()); //FIXME testear!!!!
         } else {
             return SendMessageBuilder.newBuilder()
                     .chatId(context.chatId())
                     .userName(userName)
-                    .messageText("Was already sign up")
+                    .messageText(mayBeUser.get().isAlreadyRegistered() ?
+                            "Was already sign up" : "Insert your steamID64, please")
                     .build();
         }
     }

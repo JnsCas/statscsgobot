@@ -1,6 +1,6 @@
 package com.jnscas.statscsgo.model;
 
-import com.jnscas.entities.UserTelegram;
+import com.jnscas.pinhead.entities.UserTelegram;
 import org.bson.codecs.pojo.annotations.BsonIgnore;
 
 import java.util.Optional;

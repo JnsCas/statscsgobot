@@ -1,6 +1,6 @@
 package com.jnscas.statscsgo.persistence;
 
-import com.jnscas.persistence.Persistence;
+import com.jnscas.pinhead.persistence.Persistence;
 import com.jnscas.statscsgo.model.User;
 import com.mongodb.client.MongoDatabase;
 
@@ -17,4 +17,11 @@ public class UserDAO extends Persistence<User> {
         return findByColumn("userName", userName);
     }
 
+    public void updateSteamId64(User user) {
+        updateColumn(user.getUserName(), "steamId64", user.getSteamId64());
+    }
+
+    public void cleanPendingInput(String userName) {
+        updateColumn(userName, "pendingInputName", null);
+    }
 }

@@ -1,9 +1,9 @@
-package com.jnscas.commands;
+package com.jnscas.pinhead.commands;
 
-import com.jnscas.model.ContextBot;
+import com.jnscas.pinhead.model.ContextBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 
-public interface Command { //FIXME move modules
+public interface Command {
 
     String name();
 

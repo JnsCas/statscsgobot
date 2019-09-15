@@ -1,6 +1,6 @@
-package com.jnscas.persistence;
+package com.jnscas.pinhead.persistence;
 
-import com.jnscas.entities.UserTelegram;
+import com.jnscas.pinhead.entities.UserTelegram;
 import com.mongodb.client.MongoDatabase;
 
 import java.util.Optional;

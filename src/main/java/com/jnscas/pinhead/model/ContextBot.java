@@ -1,4 +1,4 @@
-package com.jnscas.model;
+package com.jnscas.pinhead.model;
 
 import com.jnscas.statscsgo.model.User;
 import org.telegram.telegrambots.meta.api.objects.Message;

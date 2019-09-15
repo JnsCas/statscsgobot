@@ -1,4 +1,4 @@
-package com.jnscas.utils;
+package com.jnscas.pinhead.utils;
 
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 
