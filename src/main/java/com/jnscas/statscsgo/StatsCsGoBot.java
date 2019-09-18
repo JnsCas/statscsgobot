@@ -21,7 +21,7 @@ import java.util.Optional;
 public class StatsCsGoBot extends TelegramLongPollingBot { //FIXME esto deberia ser comun para cualquier bot
 
     private Config config = ConfigFactory.defaultApplication();
-    private static Logger logger = LoggerContext.getContext().getLogger(StatsCsGoBot.class.toString());
+    private static Logger logger = LoggerContext.getContext().getLogger(StatsCsGoBot.class.getSimpleName());
 
     private List<Command> commands;
 
