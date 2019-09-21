@@ -37,7 +37,6 @@ public abstract class HttpClient {
             };
             String responseBody = httpclient.execute(httpget, responseHandler);
             logger.info("----------------------------------------");
-            logger.info(responseBody); //FIXME remove
             httpclient.close();
             return responseBody;
         } catch (IOException e) {

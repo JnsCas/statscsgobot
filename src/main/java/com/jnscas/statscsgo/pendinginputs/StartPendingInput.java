@@ -3,8 +3,8 @@ package com.jnscas.statscsgo.pendinginputs;
 import com.jnscas.statscsgo.factories.FactoryUserDAO;
 import com.jnscas.pinhead.model.ContextBot;
 import com.jnscas.pinhead.pendinginputs.PendingInput;
-import com.jnscas.statscsgo.model.User;
-import com.jnscas.statscsgo.persistence.UserDAO;
+import com.jnscas.statscsgo.model.UserStats;
+import com.jnscas.statscsgo.persistence.UserStatsDAO;
 import com.jnscas.pinhead.utils.SendMessageBuilder;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 
@@ -16,15 +16,15 @@ public class StartPendingInput implements PendingInput {
 
     private static final Logger logger = Logger.getLogger(StartPendingInput.class.getSimpleName());
 
-    private UserDAO userDAO;
+    private UserStatsDAO userStatsDAO;
 
     public StartPendingInput() {
-        this.userDAO = FactoryUserDAO.create();
+        this.userStatsDAO = FactoryUserDAO.create();
     }
 
     @Override
     public SendMessage resolve(ContextBot context) {
-        String userName = context.user().getUserName();
+        String userName = context.getFromUsernameOrFirstName();
         Long chatId = context.chatId();
         String steamId = context.message().getText();
         if (isValidSteamId(steamId)) {
@@ -44,10 +44,10 @@ public class StartPendingInput implements PendingInput {
         }
     }
 
-    private void registerUser(User user, String steamId) {
-        user.setSteamId64(steamId);
-        userDAO.updateSteamId64(user);
-        userDAO.cleanPendingInput(user.getUserName());
+    private void registerUser(UserStats userStats, String steamId) {
+        userStats.setSteamId64(steamId);
+        userStatsDAO.updateSteamId64(userStats);
+        userStatsDAO.cleanPendingInput(userStats.getTelegramId());
     }
 
     @Override

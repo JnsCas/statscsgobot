@@ -1,7 +1,7 @@
 package com.jnscas.statscsgo.steam.api;
 
 import com.jnscas.pinhead.http.HttpClient;
-import com.jnscas.statscsgo.model.User;
+import com.jnscas.statscsgo.model.UserStats;
 
 public class SteamClient extends HttpClient {
 
@@ -22,15 +22,15 @@ public class SteamClient extends HttpClient {
         this.steamVersion = steamVersion;
     }
 
-    public String getRecentlyPlayedGames(User user) {
+    public String getRecentlyPlayedGames(UserStats userStats) {
         String url = createBaseUrl(protocol, host) + "/GetRecentlyPlayedGames/" + steamVersion + "?key=" + steamKey +
-                "&steamid=" + user.getSteamId64();
+                "&steamid=" + userStats.getSteamId64();
         return get(url);
     }
 
-    public String getUserStatsCsGo(User user) {
+    public String getUserStatsCsGo(UserStats userStats) {
         String url = createBaseUrl(protocol, host) + "/ISteamUserStats/GetUserStatsForGame/" + steamVersion + "?key=" + steamKey +
-                "&steamid=" + user.getSteamId64() + "&appid=" + APP_ID_CS_GO;
+                "&steamid=" + userStats.getSteamId64() + "&appid=" + APP_ID_CS_GO;
         return get(url);
     }
 

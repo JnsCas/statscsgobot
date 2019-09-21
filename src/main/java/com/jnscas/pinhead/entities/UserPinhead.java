@@ -6,22 +6,22 @@ import org.bson.types.ObjectId;
 
 import java.util.Optional;
 
-public class UserTelegram {
+public class UserPinhead {
 
     private ObjectId id;
-    private String userName;
+    private Integer telegramId;
     private String pendingInputName;
 
     /**
      * public constructor for mongodb
      */
-    public UserTelegram() {
+    public UserPinhead() {
 
     }
 
-    public UserTelegram(String userName,
-                        Optional<PendingInput> pendingInput) {
-        this.userName = userName;
+    public UserPinhead(Integer telegramId,
+                       Optional<PendingInput> pendingInput) {
+        this.telegramId = telegramId;
         this.pendingInputName = pendingInput.map(PendingInput::getPendingInputName).orElse(null);
     }
 
@@ -33,12 +33,12 @@ public class UserTelegram {
         return id;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public Integer getTelegramId() {
+        return telegramId;
     }
 
-    public String getUserName() {
-        return userName;
+    public void setTelegramId(Integer telegramId) {
+        this.telegramId = telegramId;
     }
 
     public void setPendingInputName(String pendingInputName) {

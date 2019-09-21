@@ -3,9 +3,9 @@ package com.jnscas.statscsgo.commands;
 import com.jnscas.pinhead.commands.Command;
 import com.jnscas.statscsgo.factories.FactoryUserDAO;
 import com.jnscas.pinhead.model.ContextBot;
+import com.jnscas.statscsgo.model.UserStats;
 import com.jnscas.statscsgo.pendinginputs.StartPendingInput;
-import com.jnscas.statscsgo.model.User;
-import com.jnscas.statscsgo.persistence.UserDAO;
+import com.jnscas.statscsgo.persistence.UserStatsDAO;
 import com.jnscas.pinhead.utils.SendMessageBuilder;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 
@@ -16,10 +16,10 @@ public class StartCommand implements Command {
 
     private static final Logger logger = Logger.getLogger(StartCommand.class.toString());
 
-    private UserDAO userDAO;
+    private UserStatsDAO userStatsDAO;
 
     public StartCommand() {
-        this.userDAO = FactoryUserDAO.create();
+        this.userStatsDAO = FactoryUserDAO.create();
     }
 
     @Override
@@ -29,22 +29,22 @@ public class StartCommand implements Command {
 
     @Override
     public SendMessage executeCommand(ContextBot context) {
-        String userName = context.user().getUserName();
-        Optional<User> mayBeUser = userDAO.findByUserName(userName);
+        UserStats userStats= context.user();
+        Optional<UserStats> mayBeUser = userStatsDAO.findByTelegramId(userStats.getTelegramId());
         if (!mayBeUser.isPresent()) {
-            logger.info(String.format("User %s not exists", userName));
-            User userNew = context.user();
-            userNew.setPendingInput(new StartPendingInput());
-            userDAO.store(userNew);
+            logger.info(String.format("User %s not exists", context.getFromUsernameOrFirstName()));
+            UserStats userStatsNew = context.user();
+            userStatsNew.setPendingInput(new StartPendingInput());
+            userStatsDAO.store(userStatsNew);
             return SendMessageBuilder.newBuilder()
                     .chatId(context.chatId())
-                    .userName(userName)
+                    .userName(context.getFromUsernameOrFirstName())
                     .messageText("Insert your steamID64, please")
                     .build();
         } else {
             return SendMessageBuilder.newBuilder()
                     .chatId(context.chatId())
-                    .userName(userName)
+                    .userName(context.getFromUsernameOrFirstName())
                     .messageText(mayBeUser.get().isAlreadyRegistered() ?
                             "Was already sign up" : "Insert your steamID64, please")
                     .build();

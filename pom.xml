@@ -6,7 +6,7 @@
 
   <groupId>com.jnscas</groupId>
   <artifactId>statscsgobot</artifactId>
-  <version>1.0-SNAPSHOT</version>
+  <version>0.2</version>
 
   <name>statscsgobot</name>
   <!-- FIXME change it to the project's website -->
@@ -106,6 +106,19 @@
         <plugin>
           <artifactId>maven-project-info-reports-plugin</artifactId>
           <version>3.0.0</version>
+        </plugin>
+        <plugin>
+          <artifactId>maven-assembly-plugin</artifactId>
+          <configuration>
+            <archive>
+              <manifest>
+                <mainClass>com.jnscas.Main</mainClass>
+              </manifest>
+            </archive>
+            <descriptorRefs>
+              <descriptorRef>jar-with-dependencies</descriptorRef>
+            </descriptorRefs>
+          </configuration>
         </plugin>
       </plugins>
     </pluginManagement>

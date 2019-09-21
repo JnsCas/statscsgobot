@@ -1,18 +1,18 @@
 package com.jnscas.pinhead.persistence;
 
-import com.jnscas.pinhead.entities.UserTelegram;
+import com.jnscas.pinhead.entities.UserPinhead;
 import com.mongodb.client.MongoDatabase;
 
 import java.util.Optional;
 
-public class UserTelegramDAO extends Persistence<UserTelegram> {
+public class UserTelegramDAO extends Persistence<UserPinhead> {
 
     public UserTelegramDAO(MongoDatabase database,
                            String tableName) {
-        super(database, tableName, UserTelegram.class);
+        super(database, tableName, UserPinhead.class);
     }
 
-    public Optional<UserTelegram> findByUserName(String userName) {
+    public Optional<UserPinhead> findByUserName(String userName) {
         return findByColumn("userName", userName);
     }
 }
