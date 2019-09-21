@@ -1,22 +1,23 @@
 package com.jnscas.statscsgo.model;
 
-import com.jnscas.pinhead.entities.UserTelegram;
+import com.jnscas.pinhead.entities.UserPinhead;
 import org.bson.codecs.pojo.annotations.BsonIgnore;
 
 import java.util.Optional;
 
-public class User extends UserTelegram {
+public class UserStats extends UserPinhead {
+
     private String steamId64;
 
     /**
      * public constructor for mongodb
      */
-    public User() {
+    public UserStats() {
 
     }
 
-    public User(String userName) {
-        super(userName, Optional.empty());;
+    public UserStats(Integer telegramId) {
+        super(telegramId, Optional.empty());;
     }
 
     public String getSteamId64() {

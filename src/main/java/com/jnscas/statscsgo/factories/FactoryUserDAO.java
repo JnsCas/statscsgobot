@@ -1,12 +1,12 @@
 package com.jnscas.statscsgo.factories;
 
 import com.jnscas.pinhead.factories.MongoDatabaseSingleton;
-import com.jnscas.statscsgo.persistence.UserDAO;
+import com.jnscas.statscsgo.persistence.UserStatsDAO;
 
 public class FactoryUserDAO {
 
-    public static UserDAO create() {
-        return new UserDAO(MongoDatabaseSingleton.getInstance(), "users");
+    public static UserStatsDAO create() {
+        return new UserStatsDAO(MongoDatabaseSingleton.getInstance(), "users");
     }
 
 }

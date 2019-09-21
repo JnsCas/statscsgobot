@@ -31,7 +31,7 @@ public abstract class Persistence<T> {
         return database.getCollection(tableName, typeClass);
     }
 
-    protected Optional<T> findByColumn(String columnName, String filterValue) {
+    protected Optional<T> findByColumn(String columnName, Object filterValue) {
         T obj = retrieveCollection()
                 .find(eq(columnName, filterValue))
                 .first();
@@ -42,7 +42,8 @@ public abstract class Persistence<T> {
         }
     }
 
-    protected void updateColumn(String userName, String nameColumn, String value) {
-        retrieveCollection().updateOne(eq("userName", userName), set(nameColumn, value));
+    //FIXME sacar de aca
+    protected void updateColumn(Integer telegramId, String nameColumn, String value) {
+        retrieveCollection().updateOne(eq("telegramId", telegramId), set(nameColumn, value));
     }
 }

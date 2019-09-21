@@ -4,8 +4,8 @@ package com.jnscas.statscsgo;
 import com.jnscas.pinhead.commands.Command;
 import com.jnscas.statscsgo.factories.FactoryUserDAO;
 import com.jnscas.pinhead.model.ContextBot;
-import com.jnscas.statscsgo.model.User;
-import com.jnscas.statscsgo.persistence.UserDAO;
+import com.jnscas.statscsgo.model.UserStats;
+import com.jnscas.statscsgo.persistence.UserStatsDAO;
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
 import org.apache.logging.log4j.Logger;
@@ -13,22 +13,23 @@ import org.apache.logging.log4j.core.LoggerContext;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
+import org.telegram.telegrambots.meta.api.objects.User;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import java.util.List;
 import java.util.Optional;
 
-public class StatsCsGoBot extends TelegramLongPollingBot { //FIXME esto deberia ser comun para cualquier bot
+public class StatsCsGoBot extends TelegramLongPollingBot {
 
     private Config config = ConfigFactory.defaultApplication();
     private static Logger logger = LoggerContext.getContext().getLogger(StatsCsGoBot.class.getSimpleName());
 
     private List<Command> commands;
 
-    private UserDAO userDAO;
+    private UserStatsDAO userStatsDAO;
 
     public StatsCsGoBot(List<Command> commands) {
-        this.userDAO = FactoryUserDAO.create();
+        this.userStatsDAO = FactoryUserDAO.create();
         this.commands = commands;
     }
 
@@ -66,15 +67,15 @@ public class StatsCsGoBot extends TelegramLongPollingBot { //FIXME esto deberia 
                 }
             }
         }
-
     }
 
     private ContextBot createContextBot(Update update) {
-        String userName = update.getMessage().getFrom().getUserName();
-        Optional<User> mayBeUser = userDAO.findByUserName(userName);
+        User user = update.getMessage().getFrom();
+        Optional<UserStats> mayBeUser = userStatsDAO.findByTelegramId(user.getId());
         if (!mayBeUser.isPresent()) {
-            User user = new User(userName);
-            return new ContextBot(user, update);
+            logger.info("new user connected: " + user);
+            UserStats userStats = new UserStats(user.getId());
+            return new ContextBot(userStats, update);
         } else {
             return new ContextBot(mayBeUser.get(), update);
         }

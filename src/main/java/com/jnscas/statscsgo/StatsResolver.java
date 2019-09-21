@@ -6,15 +6,17 @@ public class StatsResolver {
 
     private static String MESSAGE_STATS_USER_TEMPLATE =
             "\nK/D Ratio: %s\n" +
-            "Headshot : %s\n" +
+            "Headshot %%: %s\n" +
             "MVPs: %s";
 
     private static String MESSAGE_STATS_DETAIL_USER_TEMPLATE =
-            "\nKills HE Grenade: %s\n" +
+            "\nTotal kills: %s\n" +
+            "Total deaths: %s\n" +
+            "Kills HE Grenade: %s\n" +
             "Defused bombs : %s\n" +
             "Planted bombs: %s";
 
-    public String createStatsUserMessage(Map<String, Map<String, Integer>> stats) {
+    public String createMyStatsUser(Map<String, Map<String, Integer>> stats) {
         return String.format(MESSAGE_STATS_USER_TEMPLATE,
                 getKdRatio(stats),
                 getHeadShotsPorc(stats),
@@ -24,6 +26,8 @@ public class StatsResolver {
 
     public String createStatsDetailUserMessage(Map<String, Map<String, Integer>> stats) {
         return String.format(MESSAGE_STATS_DETAIL_USER_TEMPLATE,
+                getTotalKills(stats),
+                getTotalDeaths(stats),
                 getTotalKillsHeGrenade(stats),
                 getTotalDefusedBombs(stats),
                 getTotalPlantedBombs(stats)
@@ -31,15 +35,23 @@ public class StatsResolver {
     }
 
     private String getHeadShotsPorc(Map<String, Map<String, Integer>> stats) {
-        double totalKills = stats.get("total_kills").get("value");
+        double totalKills = getTotalKills(stats);
         double headShotsPorc = (stats.get("total_kills_headshot").get("value") / totalKills) * 100;
         return String.format("%.1f", headShotsPorc);
     }
 
     private String getKdRatio(Map<String, Map<String, Integer>> stats) {
-        double totalKills = stats.get("total_kills").get("value");
+        double totalKills = getTotalKills(stats);
         double totalDeaths = stats.get("total_deaths").get("value");
         return String.format("%.2f", totalKills/totalDeaths);
+    }
+
+    private Integer getTotalKills(Map<String, Map<String, Integer>> stats) {
+        return stats.get("total_kills").get("value");
+    }
+
+    private Integer getTotalDeaths(Map<String, Map<String, Integer>> stats) {
+        return stats.get("total_deaths").get("value");
     }
 
     private int getTotalMvps(Map<String, Map<String, Integer>> stats) {

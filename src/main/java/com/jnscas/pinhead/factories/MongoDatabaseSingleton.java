@@ -21,7 +21,7 @@ public class MongoDatabaseSingleton {
                 fromProviders(PojoCodecProvider.builder().automatic(true).build()));
 
         Config config = ConfigFactory.defaultApplication();
-        MongoClient mongoClient = MongoClients.create();
+        MongoClient mongoClient = MongoClients.create(config.getString("db.mongo.host"));
         database = mongoClient.getDatabase(config.getString("db.mongo.name")).withCodecRegistry(pojoCodecRegistry);
     }
 
