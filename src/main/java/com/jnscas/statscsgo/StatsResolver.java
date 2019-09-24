@@ -10,13 +10,18 @@ public class StatsResolver {
             "MVPs: %s";
 
     private static String MESSAGE_STATS_DETAIL_USER_TEMPLATE =
-            "\nTotal kills: %s\n" +
-            "Total deaths: %s\n" +
-            "Kills HE Grenade: %s\n" +
-            "Defused bombs : %s\n" +
-            "Planted bombs: %s";
+                    "\nTotal kills: %s\n" +
+                    "Total deaths: %s\n" +
+                    "Kills Headshot: %s\n" +
+                    "Kills Knife: %s\n" +
+                    "Kills Enemy Blinded: %s\n" +
+                    "Kills HE Grenade: %s\n" +
+                    "Kills Molotov: %s\n" +
+                    "Planted bombs: %s\n" +
+                    "Defused bombs : %s\n" +
+                    "Weapons Donated: %s";
 
-    public String createMyStatsUser(Map<String, Map<String, Integer>> stats) {
+    public String createMyStatsUserMessage(Map<String, Map<String, Integer>> stats) {
         return String.format(MESSAGE_STATS_USER_TEMPLATE,
                 getKdRatio(stats),
                 getHeadShotsPorc(stats),
@@ -28,16 +33,65 @@ public class StatsResolver {
         return String.format(MESSAGE_STATS_DETAIL_USER_TEMPLATE,
                 getTotalKills(stats),
                 getTotalDeaths(stats),
+                getTotalKillsHeadshot(stats),
+                getKillsKnife(stats),
+                getKillsEnemyBlinded(stats),
                 getTotalKillsHeGrenade(stats),
+                getTotalKillsMolotov(stats),
+                getTotalPlantedBombs(stats),
                 getTotalDefusedBombs(stats),
-                getTotalPlantedBombs(stats)
+                getWeaponsDonated(stats)
         );
+    }
+
+    public String createPistolsMessage(Map<String, Map<String, Integer>> stats) {
+        return null; //TODO
+    }
+
+    private Integer getTotalKillsGlock(Map<String, Map<String, Integer>> stats) {
+        return stats.get("total_kills_glock").get("value");
+    }
+
+    private Integer getTotalKillsDeagle(Map<String, Map<String, Integer>> stats) {
+        return stats.get("total_kills_deagle").get("value");
+    }
+
+    private Integer getTotalKillsDualBerettas(Map<String, Map<String, Integer>> stats) {
+        return stats.get("total_kills_elite").get("value");
+    }
+
+    private Integer getTotalKillsTec9(Map<String, Map<String, Integer>> stats) {
+        return stats.get("total_kills_tec9").get("value");
+    }
+
+    private Integer getTotalKillsP250(Map<String, Map<String, Integer>> stats) {
+        return stats.get("total_kills_p250").get("value");
+    }
+
+    private Integer getTotalKillsP2000(Map<String, Map<String, Integer>> stats) {
+        return stats.get("total_kills_hkp2000").get("value");
+    }
+
+    private Integer getKillsKnife(Map<String, Map<String, Integer>> stats) {
+        return stats.get("total_kills_knife").get("value");
+    }
+
+    private Integer getKillsEnemyBlinded(Map<String, Map<String, Integer>> stats) {
+        return stats.get("total_kills_enemy_blinded").get("value");
+    }
+
+    private Integer getWeaponsDonated(Map<String, Map<String, Integer>> stats) {
+        return stats.get("total_weapons_donated").get("value");
     }
 
     private String getHeadShotsPorc(Map<String, Map<String, Integer>> stats) {
         double totalKills = getTotalKills(stats);
         double headShotsPorc = (stats.get("total_kills_headshot").get("value") / totalKills) * 100;
         return String.format("%.1f", headShotsPorc);
+    }
+
+    private Integer getTotalKillsHeadshot(Map<String, Map<String, Integer>> stats) {
+        return stats.get("total_kills_headshot").get("value");
     }
 
     private String getKdRatio(Map<String, Map<String, Integer>> stats) {
@@ -68,6 +122,10 @@ public class StatsResolver {
 
     private int getTotalKillsHeGrenade(Map<String, Map<String, Integer>> stats) {
         return stats.get("total_kills_hegrenade").get("value");
+    }
+
+    private int getTotalKillsMolotov(Map<String, Map<String, Integer>> stats) {
+        return stats.get("total_kills_molotov").get("value");
     }
 
     private int getTotalWins(Map<String, Map<String, Integer>> stats) {

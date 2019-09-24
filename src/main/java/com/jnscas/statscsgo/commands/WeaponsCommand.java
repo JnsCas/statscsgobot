@@ -7,18 +7,18 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 
 import java.util.Map;
 
-public class MyStatsCommand
+public class WeaponsCommand
         extends MyStatsAbstract implements Command {
 
     private StatsResolver statsResolver;
 
-    public MyStatsCommand() {
+    public WeaponsCommand() {
         this.statsResolver = new StatsResolver();
     }
 
     @Override
     public String name() {
-        return "/mystats";
+        return "/pistols";
     }
 
     @Override
@@ -28,6 +28,6 @@ public class MyStatsCommand
 
     @Override
     protected String createMyStats(Map<String, Map<String, Integer>> stats) {
-        return statsResolver.createMyStatsUserMessage(stats);
+        return statsResolver.createPistolsMessage(stats);
     }
 }

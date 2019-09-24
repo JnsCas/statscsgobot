@@ -3,7 +3,6 @@ package com.jnscas.statscsgo.commands;
 import com.jnscas.pinhead.commands.Command;
 import com.jnscas.pinhead.model.ContextBot;
 import com.jnscas.statscsgo.StatsResolver;
-import com.jnscas.statscsgo.factories.FactorySteamClient;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 
 import java.util.Map;
@@ -14,7 +13,6 @@ public class MyStatsDetailCommand
     private StatsResolver statsResolver;
 
     public MyStatsDetailCommand() {
-        super(FactorySteamClient.create());
         this.statsResolver = new StatsResolver();
     }
 
