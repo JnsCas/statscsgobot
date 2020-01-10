@@ -2,6 +2,8 @@ package com.jnscas.statscsgo;
 
 
 import com.jnscas.pinhead.commands.Command;
+import com.jnscas.pinhead.utils.SendMessageBuilder;
+import com.jnscas.statscsgo.exceptions.NotRegisteredExceptionStatsCsGoBot;
 import com.jnscas.statscsgo.factories.FactoryUserDAO;
 import com.jnscas.pinhead.model.ContextBot;
 import com.jnscas.statscsgo.model.UserStats;
@@ -25,7 +27,6 @@ public class StatsCsGoBot extends TelegramLongPollingBot {
     private static Logger logger = LoggerContext.getContext().getLogger(StatsCsGoBot.class.getSimpleName());
 
     private List<Command> commands;
-
     private UserStatsDAO userStatsDAO;
 
     public StatsCsGoBot(List<Command> commands) {
@@ -36,37 +37,46 @@ public class StatsCsGoBot extends TelegramLongPollingBot {
     @Override
     public void onUpdateReceived(final Update update) {
         ContextBot context = createContextBot(update);
-        logger.info(String.format("message received: %s", context));
-
-        if (context.message().isCommand()) {
-            commands.stream().filter(command ->
-                    command.name().equalsIgnoreCase(context.message().getText())
-            ).findFirst().ifPresent(command -> {
-                String commandName = command.name();
-                try {
-                    logger.info(String.format("Command found: %s", commandName));
-                    SendMessage sendMessage = command.executeCommand(context);
-                    sendMessage.validate();
-                    execute(sendMessage);
-                    logger.info(String.format("Command %s executed", commandName));
-                } catch (TelegramApiException e) {
-                    logger.error("Error executing command: " + commandName);
-                    e.printStackTrace();
+        SendMessage sendMessage = null;
+        try {
+            if (context.message().isCommand()) {
+                Optional<Command> mayBeCommand = searchCommand(context);
+                if (mayBeCommand.isPresent()) {
+                    Command command = mayBeCommand.get();
+                    logger.info(String.format("Command found: %s", command.name()));
+                    sendMessage = command.executeCommand(context);
+                    logger.info(String.format("Command %s executed", command.name()));
                 }
-            });
-        } else {
-            if (context.user().pendingInputExists()) {
-                try {
-                    logger.info(String.format("PendingInput found: %s", context.user().getPendingInputName()));
-                    SendMessage sendMessage = context.user().getPendingInput().resolve(context);
-                    sendMessage.validate();
-                    execute(sendMessage);
-                    logger.info(String.format("PendingInput %s executed", context.user().getPendingInputName()));
-                } catch (TelegramApiException e) {
-                    e.printStackTrace();
-                }
+            } else if (context.user().pendingInputExists()) {
+                logger.info(String.format("PendingInput found: %s", context.user().getPendingInputName()));
+                sendMessage = context.user().getPendingInput().resolve(context);
+                logger.info(String.format("PendingInput %s executed", context.user().getPendingInputName()));
+                //FIXME add clean pendingInput here?
             }
+        } catch (NotRegisteredExceptionStatsCsGoBot e) {
+            logger.info(e.getLocalizedMessage());
+            sendMessage = SendMessageBuilder.newBuilder()
+                    .chatId(context.chatId())
+                    .userName(context.getFromUsernameOrFirstName())
+                    .messageText("you are not registered. Did you execute '/start' command?")
+                    .build();
         }
+
+        try {
+            if (sendMessage != null) {
+                sendMessage.validate();
+                execute(sendMessage);
+            }
+        } catch (TelegramApiException e) {
+            logger.error("Error with message :" + context.message().getText());
+            e.printStackTrace();
+        }
+    }
+
+    private Optional<Command> searchCommand(ContextBot context) {
+        return commands.stream().filter(command ->
+                command.name().equalsIgnoreCase(context.message().getText())
+        ).findFirst();
     }
 
     private ContextBot createContextBot(Update update) {

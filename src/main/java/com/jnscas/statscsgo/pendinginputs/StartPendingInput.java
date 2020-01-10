@@ -47,7 +47,7 @@ public class StartPendingInput implements PendingInput {
     private void registerUser(UserStats userStats, String steamId) {
         userStats.setSteamId64(steamId);
         userStatsDAO.updateSteamId64(userStats);
-        userStatsDAO.cleanPendingInput(userStats.getTelegramId());
+        userStatsDAO.cleanPendingInput(userStats.getTelegramId()); //FIXME move this?
     }
 
     @Override

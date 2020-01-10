@@ -16,7 +16,7 @@ public class StatsResolver {
             "Defused bombs : %s\n" +
             "Planted bombs: %s";
 
-    public String createMyStatsUser(Map<String, Map<String, Integer>> stats) {
+    public String createMyStatsUserMessage(Map<String, Map<String, Integer>> stats) {
         return String.format(MESSAGE_STATS_USER_TEMPLATE,
                 getKdRatio(stats),
                 getHeadShotsPorc(stats),
@@ -24,7 +24,7 @@ public class StatsResolver {
         );
     }
 
-    public String createStatsDetailUserMessage(Map<String, Map<String, Integer>> stats) {
+    public String createMyStatsDetailUserMessage(Map<String, Map<String, Integer>> stats) {
         return String.format(MESSAGE_STATS_DETAIL_USER_TEMPLATE,
                 getTotalKills(stats),
                 getTotalDeaths(stats),
