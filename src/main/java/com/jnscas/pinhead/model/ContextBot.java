@@ -1,27 +1,27 @@
 package com.jnscas.pinhead.model;
 
-import com.jnscas.statscsgo.model.UserStats;
+import com.jnscas.pinhead.entities.UserPinhead;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.User;
 
 public class ContextBot {
 
-    private UserStats userStats;
+    private UserPinhead user;
     private Update update;
     private Message message;
     private Long chatId;
 
-    public ContextBot(UserStats userStats,
+    public ContextBot(UserPinhead user,
                       Update update) {
-        this.userStats = userStats;
+        this.user = user;
         this.update = update;
         this.message = update.getMessage();
         this.chatId = update.getMessage().getChatId();
     }
 
-    public UserStats user() {
-        return userStats;
+    public UserPinhead user() {
+        return user;
     }
 
     public Update update() {
@@ -45,7 +45,7 @@ public class ContextBot {
     @Override
     public String toString() {
         return "ContextBot{" +
-                "user=" + userStats +
+                "user=" + user +
                 ", update=" + update +
                 ", message=" + message +
                 ", chatId=" + chatId +
