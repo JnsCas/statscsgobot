@@ -5,6 +5,7 @@ import com.jnscas.pinhead.model.ContextBot;
 import com.jnscas.pinhead.utils.SendMessageBuilder;
 import com.jnscas.statscsgo.StatsResolver;
 import com.jnscas.statscsgo.factories.FactorySteamClient;
+import com.jnscas.statscsgo.model.UserStats;
 import com.jnscas.statscsgo.steam.api.SteamClient;
 import com.jnscas.statscsgo.steam.api.responses.UserStatsCsGoResponse;
 import com.jnscas.statscsgo.utils.Validation;

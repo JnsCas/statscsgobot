@@ -1,5 +1,6 @@
 package com.jnscas.statscsgo.pendinginputs;
 
+import com.jnscas.pinhead.entities.UserPinhead;
 import com.jnscas.statscsgo.factories.FactoryUserDAO;
 import com.jnscas.pinhead.model.ContextBot;
 import com.jnscas.pinhead.pendinginputs.PendingInput;
@@ -44,10 +45,11 @@ public class StartPendingInput implements PendingInput {
         }
     }
 
-    private void registerUser(UserStats userStats, String steamId) {
+    private void registerUser(UserPinhead user, String steamId) {
+        UserStats userStats = new UserStats(user.getTelegramId());
         userStats.setSteamId64(steamId);
         userStatsDAO.updateSteamId64(userStats);
-        userStatsDAO.cleanPendingInput(userStats.getTelegramId()); //FIXME move this?
+        userStatsDAO.cleanPendingInput(user.getTelegramId()); //FIXME move this?
     }
 
     @Override

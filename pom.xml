@@ -6,7 +6,7 @@
 
   <groupId>com.jnscas</groupId>
   <artifactId>statscsgobot</artifactId>
-  <version>0.2</version>
+  <version>1.0-SNAPSHOT</version>
 
   <name>statscsgobot</name>
   <!-- FIXME change it to the project's website -->
@@ -63,6 +63,13 @@
       <version>${jackson.version}</version>
     </dependency>
 
+    <!-- com.jnscas dependencies -->
+    <dependency>
+      <groupId>com.jnscas</groupId>
+      <artifactId>pinhead</artifactId>
+      <version>1.0-SNAPSHOT</version>
+    </dependency>
+
   </dependencies>
 
   <build>
@@ -112,7 +119,7 @@
           <configuration>
             <archive>
               <manifest>
-                <mainClass>com.jnscas.Main</mainClass>
+                <mainClass>com.jnscas.statscsgo.Main</mainClass>
               </manifest>
             </archive>
             <descriptorRefs>

@@ -1,5 +1,6 @@
 package com.jnscas.statscsgo.steam.api;
 
+import com.jnscas.pinhead.entities.UserPinhead;
 import com.jnscas.pinhead.http.HttpClient;
 import com.jnscas.statscsgo.model.UserStats;
 
@@ -28,9 +29,9 @@ public class SteamClient extends HttpClient {
         return get(url);
     }
 
-    public String getUserStatsCsGo(UserStats userStats) {
+    public String getUserStatsCsGo(UserPinhead userPinhead) {
         String url = createBaseUrl(protocol, host) + "/ISteamUserStats/GetUserStatsForGame/" + steamVersion + "?key=" + steamKey +
-                "&steamid=" + userStats.getSteamId64() + "&appid=" + APP_ID_CS_GO;
+                "&steamid=" + ((UserStats) userPinhead).getSteamId64() + "&appid=" + APP_ID_CS_GO;
         return get(url);
     }
 

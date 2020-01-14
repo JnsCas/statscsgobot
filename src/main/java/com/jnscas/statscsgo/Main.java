@@ -1,4 +1,4 @@
-package com.jnscas;
+package com.jnscas.statscsgo;
 
 import com.jnscas.statscsgo.StatsCsGoBotWarmUp;
 import org.telegram.telegrambots.ApiContextInitializer;
