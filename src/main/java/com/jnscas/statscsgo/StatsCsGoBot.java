@@ -4,7 +4,6 @@ package com.jnscas.statscsgo;
 import com.jnscas.pinhead.Pinhead;
 import com.jnscas.pinhead.commands.Command;
 import com.jnscas.pinhead.model.ContextBot;
-import com.jnscas.statscsgo.factories.FactoryUserDAO;
 import com.jnscas.statscsgo.model.UserStats;
 import com.jnscas.statscsgo.persistence.UserStatsDAO;
 import com.typesafe.config.Config;
@@ -24,9 +23,10 @@ public class StatsCsGoBot extends Pinhead {
 
     private UserStatsDAO userStatsDAO;
 
-    public StatsCsGoBot(List<Command> commands) {
+    public StatsCsGoBot(List<Command> commands,
+                        UserStatsDAO userStatsDAO) {
         super(commands);
-        this.userStatsDAO = FactoryUserDAO.create();
+        this.userStatsDAO = userStatsDAO;
     }
 
     @Override

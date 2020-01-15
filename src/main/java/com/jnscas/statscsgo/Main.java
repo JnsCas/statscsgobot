@@ -11,10 +11,15 @@ import com.jnscas.statscsgo.factories.FactoryUserDAO;
 public class Main extends PinheadMain {
 
     public static void main(String[] args ) {
-        init(() -> new StatsCsGoBot(Lists.newArrayList(
-                new StartCommand(FactoryUserDAO.create()),
-                new MyStatsCommand(new StatsResolver(), FactorySteamClient.create()),
-                new MyStatsDetailCommand(new StatsResolver(), FactorySteamClient.create())
-        )));
+        init(() ->
+            new StatsCsGoBot(
+                Lists.newArrayList(
+                    new StartCommand(FactoryUserDAO.create()),
+                    new MyStatsCommand(new StatsResolver(), FactorySteamClient.create()),
+                    new MyStatsDetailCommand(new StatsResolver(), FactorySteamClient.create())
+                ),
+                FactoryUserDAO.create()
+            )
+        );
     }
 }
