@@ -13,7 +13,7 @@ public class StatsResolver {
             "\nTotal kills: %s\n" +
             "Total deaths: %s\n" +
             "Kills HE Grenade: %s\n" +
-            "Defused bombs : %s\n" +
+            "Defused bombs: %s\n" +
             "Planted bombs: %s";
 
     public String createMyStatsUserMessage(Map<String, Map<String, Integer>> stats) {
@@ -36,13 +36,13 @@ public class StatsResolver {
 
     private String getHeadShotsPorc(Map<String, Map<String, Integer>> stats) {
         double totalKills = getTotalKills(stats);
-        double headShotsPorc = (stats.get("total_kills_headshot").get("value") / totalKills) * 100;
+        double headShotsPorc = (getTotalKillsHeadshot(stats) / totalKills) * 100;
         return String.format("%.1f", headShotsPorc);
     }
 
     private String getKdRatio(Map<String, Map<String, Integer>> stats) {
         double totalKills = getTotalKills(stats);
-        double totalDeaths = stats.get("total_deaths").get("value");
+        double totalDeaths = getTotalDeaths(stats);
         return String.format("%.2f", totalKills/totalDeaths);
     }
 
@@ -76,5 +76,9 @@ public class StatsResolver {
 
     private int getTotalPlantedBombs(Map<String, Map<String, Integer>> stats) {
         return stats.get("total_planted_bombs").get("value");
+    }
+
+    private int getTotalKillsHeadshot(Map<String, Map<String, Integer>> stats) {
+        return stats.get("total_kills_headshot").get("value");
     }
 }

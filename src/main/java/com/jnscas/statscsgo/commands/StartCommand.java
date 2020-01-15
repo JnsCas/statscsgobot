@@ -19,8 +19,8 @@ public class StartCommand implements Command {
 
     private UserStatsDAO userStatsDAO;
 
-    public StartCommand() {
-        this.userStatsDAO = FactoryUserDAO.create();
+    public StartCommand(UserStatsDAO userStatsDAO) {
+        this.userStatsDAO = userStatsDAO;
     }
 
     @Override
@@ -47,7 +47,7 @@ public class StartCommand implements Command {
                     .chatId(context.chatId())
                     .userName(context.getFromUsernameOrFirstName())
                     .messageText(mayBeUser.get().isAlreadyRegistered() ?
-                            "Was already sign up" : "Insert your steamID64, please")
+                            "is already sign up" : "Insert your steamID64, please")
                     .build();
         }
     }

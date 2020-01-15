@@ -1,21 +1,20 @@
 package com.jnscas.statscsgo;
 
-import com.jnscas.statscsgo.StatsCsGoBotWarmUp;
-import org.telegram.telegrambots.ApiContextInitializer;
-import org.telegram.telegrambots.meta.TelegramBotsApi;
-import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
+import com.google.common.collect.Lists;
+import com.jnscas.pinhead.PinheadMain;
+import com.jnscas.statscsgo.commands.MyStatsCommand;
+import com.jnscas.statscsgo.commands.MyStatsDetailCommand;
+import com.jnscas.statscsgo.commands.StartCommand;
+import com.jnscas.statscsgo.factories.FactorySteamClient;
+import com.jnscas.statscsgo.factories.FactoryUserDAO;
 
-public class Main {
+public class Main extends PinheadMain {
 
-    public static void main( String[] args ) {
-        ApiContextInitializer.init();
-        TelegramBotsApi botsApi = new TelegramBotsApi();
-        try {
-            botsApi.registerBot(StatsCsGoBotWarmUp.init());
-        } catch (TelegramApiException e) {
-            e.printStackTrace();
-        } finally {
-            //StatsCsGoBotWarmUp.close(); FIXME
-        }
+    public static void main(String[] args ) {
+        init(() -> new StatsCsGoBot(Lists.newArrayList(
+                new StartCommand(FactoryUserDAO.create()),
+                new MyStatsCommand(new StatsResolver(), FactorySteamClient.create()),
+                new MyStatsDetailCommand(new StatsResolver(), FactorySteamClient.create())
+        )));
     }
 }
