@@ -21,6 +21,14 @@
     <jackson.version>1.9.13</jackson.version>
   </properties>
 
+  <scm>
+    <connection>scm:git:git@github.com:JnsCas/statscsgobot.git</connection>
+    <developerConnection>scm:git:git@github.com:JnsCas/statscsgobot.git</developerConnection>
+    <url>https://github.com/JnsCas/statscsgobot</url>
+    <tag>HEAD</tag>
+  </scm>
+  
+
   <dependencies>
     <dependency>
       <groupId>junit</groupId>
