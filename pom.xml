@@ -5,7 +5,7 @@
 
   <groupId>com.jnscas</groupId>
   <artifactId>statscsgobot</artifactId>
-  <version>1.2-SNAPSHOT</version>
+  <version>1.1.1</version>
 
   <name>statscsgobot</name>
   <!-- FIXME change it to the project's website -->
@@ -24,7 +24,7 @@
     <connection>scm:git:git@github.com:JnsCas/statscsgobot.git</connection>
     <developerConnection>scm:git:git@github.com:JnsCas/statscsgobot.git</developerConnection>
     <url>https://github.com/JnsCas/statscsgobot</url>
-    <tag>HEAD</tag>
+    <tag>1.1.1</tag>
   </scm>
 
 
