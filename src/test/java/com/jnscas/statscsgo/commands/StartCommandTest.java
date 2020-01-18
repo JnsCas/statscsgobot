@@ -11,8 +11,7 @@ import java.util.Optional;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 public class StartCommandTest {
 
@@ -34,6 +33,7 @@ public class StartCommandTest {
         when(contextBot.getFromUsernameOrFirstName()).thenReturn("user-test");
 
         when(userStatsDAO.findByTelegramId(telegramId)).thenReturn(Optional.empty());
+        doNothing().when(userStatsDAO).store(any());
 
         SendMessage sendMessage = command.executeCommand(contextBot);
 

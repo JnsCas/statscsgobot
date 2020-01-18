@@ -1,9 +1,11 @@
 package com.jnscas.statscsgo.pendinginputs;
 
+import com.jnscas.statscsgo.persistence.UserStatsDAO;
 import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.mock;
 
 public class StartPendingInputTest {
 
@@ -11,7 +13,8 @@ public class StartPendingInputTest {
 
     @Before
     public void init() {
-        command = new StartPendingInput();
+        UserStatsDAO userStatsDAO = mock(UserStatsDAO.class);
+        command = new StartPendingInput(userStatsDAO); //FIXME
     }
 
     @Test

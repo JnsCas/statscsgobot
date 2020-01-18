@@ -4,7 +4,6 @@ import com.jnscas.pinhead.entities.UserPinhead;
 import com.jnscas.pinhead.model.ContextBot;
 import com.jnscas.pinhead.pendinginputs.PendingInput;
 import com.jnscas.pinhead.utils.SendMessageBuilder;
-import com.jnscas.statscsgo.factories.FactoryUserDAO;
 import com.jnscas.statscsgo.model.UserStats;
 import com.jnscas.statscsgo.persistence.UserStatsDAO;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
@@ -17,8 +16,8 @@ public class StartPendingInput implements PendingInput {
 
     private UserStatsDAO userStatsDAO;
 
-    public StartPendingInput() {
-        this.userStatsDAO = FactoryUserDAO.create();
+    public StartPendingInput(UserStatsDAO userStatsDAO) {
+        this.userStatsDAO = userStatsDAO; //FIXME
     }
 
     @Override

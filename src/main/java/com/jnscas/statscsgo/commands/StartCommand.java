@@ -35,7 +35,7 @@ public class StartCommand implements Command {
         if (!mayBeUser.isPresent()) {
             logger.info(String.format("User %s not exists", context.getFromUsernameOrFirstName()));
             UserStats userStatsNew = new UserStats(userPinhead.getTelegramId());
-            userStatsNew.setPendingInput(new StartPendingInput());
+            userStatsNew.setPendingInput(new StartPendingInput(userStatsDAO)); //FIXME
             userStatsDAO.store(userStatsNew);
             return SendMessageBuilder.newBuilder()
                     .chatId(context.chatId())
