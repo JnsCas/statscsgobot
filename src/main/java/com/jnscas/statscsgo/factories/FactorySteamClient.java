@@ -1,6 +1,6 @@
 package com.jnscas.statscsgo.factories;
 
-import com.jnscas.statscsgo.steam.api.SteamClient;
+import com.jnscas.statscsgo.steam.SteamClient;
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
 

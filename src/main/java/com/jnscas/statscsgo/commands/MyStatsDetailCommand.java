@@ -2,18 +2,22 @@ package com.jnscas.statscsgo.commands;
 
 import com.jnscas.pinhead.commands.Command;
 import com.jnscas.pinhead.model.ContextBot;
+import com.jnscas.pinhead.utils.SendMessageBuilder;
+import com.jnscas.pinhead.utils.Validation;
 import com.jnscas.statscsgo.StatsResolver;
+import com.jnscas.statscsgo.steam.SteamClient;
+import com.jnscas.statscsgo.steam.api.responses.UserStatsCsGoResponse;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 
-import java.util.Map;
-
-public class MyStatsDetailCommand
-        extends MyStatsAbstract implements Command {
+public class MyStatsDetailCommand implements Command {
 
     private StatsResolver statsResolver;
+    private SteamClient steamClient;
 
-    public MyStatsDetailCommand() {
-        this.statsResolver = new StatsResolver();
+    public MyStatsDetailCommand(StatsResolver statsResolver,
+                                SteamClient steamClient) {
+        this.statsResolver = statsResolver;
+        this.steamClient = steamClient;
     }
 
     @Override
@@ -23,11 +27,13 @@ public class MyStatsDetailCommand
 
     @Override
     public SendMessage executeCommand(ContextBot context) {
-        return executeMyStats(context);
-    }
-
-    @Override
-    protected String createMyStats(Map<String, Map<String, Integer>> stats) {
-        return statsResolver.createStatsDetailUserMessage(stats);
+        Validation.signInRequired(context);
+        UserStatsCsGoResponse userStatsCsGoResponse = steamClient.getUserStatsCsGo(context.user());
+        String myStats = statsResolver.createMyStatsDetailUserMessage(userStatsCsGoResponse.getPlayerstats().getStats());
+        return SendMessageBuilder.newBuilder()
+                .chatId(context.chatId())
+                .userName(context.getFromUsernameOrFirstName())
+                .messageText(myStats)
+                .build();
     }
 }
