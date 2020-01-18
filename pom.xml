@@ -134,6 +134,7 @@
           <version>3.0.0-M1</version>
           <configuration>
             <tagNameFormat>@{project.version}</tagNameFormat>
+            <goals>compile assembly:single</goals>
           </configuration>
         </plugin>
 
