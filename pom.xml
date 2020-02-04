@@ -134,7 +134,7 @@
           <version>3.0.0-M1</version>
           <configuration>
             <tagNameFormat>@{project.version}</tagNameFormat>
-            <goals>compile assembly:single</goals>
+            <goals>compile assembly:single deploy</goals>
           </configuration>
         </plugin>
 
@@ -170,7 +170,7 @@
     <repository>
       <id>internal.repo</id>
       <name>Internal Repo</name>
-      <url>file:///home/jonascasteglione/jns/projects/internal-repo</url>
+      <url>${url.deploy}</url>
     </repository>
   </distributionManagement>
 
